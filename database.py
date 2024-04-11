@@ -48,11 +48,63 @@ class Database:
                         grade float,
                         extra_point float,
                         observation text);''')
+
+        self.connection.commit()
     
+    def insert(self, table: str, data: dict[str]):
+        he = []
+        va = []
+        if data != {}:
+            for h in data.keys():
+                he.append(h)
+            for v in data.values():
+                va.append(v)
+            headers = ""
+            values = ""
+
+            for item in he:
+                headers += f"{item}, "
+
+            for item in va:
+                values += f"\'{item}\', "
+
+            query = f"INSERT INTO {table} ({headers[:-2]}) VALUES ({values[:-2]})"
+            print(query)
+            try:
+                self.connection.execute(query)
+                self.connection.commit()
+            except sqlite3.IntegrityError as e:
+                log().critical('Generic Error')
+
+    def read(self, arg: str, table: str, condition: str = "")-> list[tuple[str]]:
+
+        result = self.cursor.execute(f"SELECT {arg} FROM {table} {condition}")
+        return result
+    
+    def delete(self, table: str, condition: str):
+        if table and condition != "":
+            query = f"DELETE FROM {table} WHERE {condition}"
+            
+            try:
+                self.cursor.execute(query)
+                self.connection.commit()
+            except sqlite3.IntegrityError as e:
+                log().critical('Generic Error')
+
     def closeConnection(self):
         self.connection.close()
 
         
 if __name__ == "__main__":
     db = Database()
-    db.firstRun()
+    #db.firstRun()
+    # db.insert("teacher", {'id': 0, 'name': 'jozephf', 'info': 'whatever'})
+    # print(db.read('*', "teacher").fetchall())
+    # db.insert("teacher", {'id': 1, 'name': 'joao', 'info': 'casdaseda'})
+    # print(db.read('*', "teacher").fetchall())
+    # db.delete("teacher", "id = 0")
+    # print(db.read('*', "teacher"))
+    # db.delete("teacher", "id = 1")
+    # print(db.read('*', "teacher"))
+    
+    # print(db.read('*', "teacher").fetchall())
