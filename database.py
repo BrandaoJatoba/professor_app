@@ -8,12 +8,12 @@ class Database:
     def firstRun(self):
 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS teacher (
-                        id interger,
+                        id interger PRIMARY KEY,
                         name varchar,
                         info text);''')
 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS course (
-                        id integer Primary key,
+                        id integer PRIMARY KEY AUTOINCREMENT,
                         name varchar,
                         teacher_id integer,
                         created_at timestamp, 
@@ -21,14 +21,14 @@ class Database:
                         info text);''')
         
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS student (
-                        id interger,
+                        id interger PRIMARY KEY,
                         name text,
                         course_id interger,
                         observation text);''')
 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS class (
                         course_id interger,
-                        id interger,
+                        id interger PRIMARY KEY AUTOINCREMENT,
                         type varchar,
                         name varchar,
                         date timestamp,
@@ -37,7 +37,7 @@ class Database:
                         wasTaken bool);''')
 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS test (
-                        id integer,
+                        id integer PRIMARY KEY AUTOINCREMENT,
                         course_id integer,
                         info varchar,
                         date timestamp);''')
@@ -69,16 +69,25 @@ class Database:
                 values += f"\'{item}\', "
 
             query = f"INSERT INTO {table} ({headers[:-2]}) VALUES ({values[:-2]})"
-            print(query)
+            
             try:
                 self.connection.execute(query)
                 self.connection.commit()
             except sqlite3.IntegrityError as e:
-                log().critical('Generic Error')
+                log().critical('Insert Error')
+
+    def update(self, columns_and_values: str, table: str, condition: str = "" ):
+        try:
+            self.cursor.execute(f"UPDATE {table} set {columns_and_values} {condition}")
+            self.connection.commit()
+        except sqlite3.IntegrityError as e:
+            log().critical('Update Error')
 
     def read(self, arg: str, table: str, condition: str = "")-> list[tuple[str]]:
-
-        result = self.cursor.execute(f"SELECT {arg} FROM {table} {condition}")
+        try:
+            result = self.cursor.execute(f"SELECT {arg} FROM {table} {condition}")
+        except sqlite3.IntegrityError as e:
+            log().critical('Read Error')
         return result
     
     def delete(self, table: str, condition: str):
@@ -89,7 +98,7 @@ class Database:
                 self.cursor.execute(query)
                 self.connection.commit()
             except sqlite3.IntegrityError as e:
-                log().critical('Generic Error')
+                log().critical('Delete Error')
 
     def closeConnection(self):
         self.connection.close()
@@ -97,11 +106,11 @@ class Database:
         
 if __name__ == "__main__":
     db = Database()
-    #db.firstRun()
-    # db.insert("teacher", {'id': 0, 'name': 'jozephf', 'info': 'whatever'})
+    db.firstRun()
+    db.insert("teacher", {'id': 0, 'name': 'jozephf', 'info': 'whatever'})
     # print(db.read('*', "teacher").fetchall())
-    # db.insert("teacher", {'id': 1, 'name': 'joao', 'info': 'casdaseda'})
-    # print(db.read('*', "teacher").fetchall())
+    db.insert("teacher", {'id': 1, 'name': 'joao', 'info': 'casdaseda'})
+    print(db.read('*', "teacher").fetchall())
     # db.delete("teacher", "id = 0")
     # print(db.read('*', "teacher"))
     # db.delete("teacher", "id = 1")
