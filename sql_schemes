@@ -1,0 +1,55 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table course {
+  id integer
+  teacher_id integer
+  created_at timestamp 
+  times text
+  info text
+}
+
+Table teacher {
+  id interger
+  name varchar
+  info text
+}
+
+Table student {
+  id interger
+  name text
+  course_id interger
+  observation text
+}
+
+Table class {
+  course_id interger
+  id interger
+  type varchar
+  name varchar
+  date timestamp
+  info text
+  observation text
+  wasTaken bool
+}
+
+Table test {
+  id integer
+  course_id integer
+  info varchar
+  date timestamp
+}
+
+Table grade {
+  student_id integer
+  test_id integer
+  grade float
+  extra_point float
+  observation text
+}
+Ref: grade.student_id <> student.id 
+Ref: grade.test_id > test.id
+Ref: test.course_id > course.id
+Ref: teacher.id > course.teacher_id
+Ref: course.id < class.course_id
+Ref: course.id < student.course_id
