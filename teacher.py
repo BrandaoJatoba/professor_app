@@ -2,7 +2,7 @@ from db_getter import Db_getter
 
 class Teacher(Db_getter):
 
-    table = "teacher"
+    table = "teachers"
     table_row_1 = "id"
     table_row_2 = "name"
     table_row_3 = "info"
@@ -27,8 +27,6 @@ class Teacher(Db_getter):
     
     @classmethod
     def save_teacher(cls, teacher: "Teacher") -> None:
-        #insert takes table: str and data: dict[str]
-        #"INSERT INTO table ({headers[:-2]}) VALUES ({values[:-2]})
         insert_query = vars(teacher)
         Teacher.connection.insert(Teacher.table, insert_query)
         return
