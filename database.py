@@ -7,47 +7,52 @@ class Database:
 
     def firstRun(self):
 
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS teacher (
-                        id interger PRIMARY KEY,
-                        name varchar,
-                        info text);''')
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS teachers (
+                        id INTEGER PRIMARY KEY,
+                        name VARCHAR,
+                        info TEXT);''')
 
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS course (
-                        id integer PRIMARY KEY AUTOINCREMENT,
-                        name varchar,
-                        teacher_id integer,
-                        created_at timestamp, 
-                        times text,
-                        info text);''')
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS courses (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        title VARCHAR,
+                        teacher_id INTEGER,
+                        schedule TEXT,
+                        info TEXT,
+                        finished INTEGER);''')
         
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS student (
-                        id interger PRIMARY KEY,
-                        name text,
-                        course_id interger,
-                        observation text);''')
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS students (
+                        id INTEGER PRIMARY KEY,
+                        name TEXT,
+                        observation TEXT);''')
 
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS class (
-                        course_id interger,
-                        id interger PRIMARY KEY AUTOINCREMENT,
-                        type varchar,
-                        name varchar,
-                        date timestamp,
-                        info text,
-                        observation text,
-                        wasTaken bool);''')
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS courses_students (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        student_id INTEGER,
+                        course_id INTEGER);''')
 
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS test (
-                        id integer PRIMARY KEY AUTOINCREMENT,
-                        course_id integer,
-                        info varchar,
-                        date timestamp);''')
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS classes (
+                        course_id INTEGER,
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        type VARCHAR,
+                        name VARCHAR,
+                        date TIMESTAMP,
+                        info TEXT,
+                        observation TEXT,
+                        wasTaken BOOL);''')
+
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS tests (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        course_id INTEGER,
+                        info VARCHAR,
+                        date TIMESTAMP);''')
  
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS grade (
-                        student_id integer,
-                        test_id integer,
-                        grade float,
-                        extra_point float,
-                        observation text);''')
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS grades (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        student_id INTEGER,
+                        test_id INTEGER,
+                        grade FLOAT,
+                        extra_point FLOAT,
+                        observation TEXT);''')
 
         self.connection.commit()
     
@@ -66,7 +71,10 @@ class Database:
                 headers += f"{item}, "
 
             for item in va:
-                values += f"\'{item}\', "
+                if type(item) == int:
+                    values += f"{item}, "
+                else:
+                    values += f"\'{item}\', "
 
             query = f"INSERT INTO {table} ({headers[:-2]}) VALUES ({values[:-2]})"
             
@@ -107,13 +115,12 @@ class Database:
 if __name__ == "__main__":
     db = Database()
     db.firstRun()
-    db.insert("teacher", {'id': 0, 'name': 'jozephf', 'info': 'whatever'})
+    db.insert("teachers", {'id': 0, 'name': 'jozephf', 'info': 'whatever'})
     # print(db.read('*', "teacher").fetchall())
-    db.insert("teacher", {'id': 1, 'name': 'joao', 'info': 'casdaseda'})
-    print(db.read('*', "teacher").fetchall())
+    db.insert("teachers", {'id': 1, 'name': 'joao', 'info': 'casdaseda'})
+    print(db.read('*', "teachers").fetchall())
     # db.delete("teacher", "id = 0")
     # print(db.read('*', "teacher"))
     # db.delete("teacher", "id = 1")
     # print(db.read('*', "teacher"))
     
-    # print(db.read('*', "teacher").fetchall())
