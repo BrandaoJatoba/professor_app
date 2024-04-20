@@ -45,7 +45,6 @@ class Course(Db_getter):
     def save_course(cls, course: "Course") -> None:
         insert_query = {Course.table_row_2: course.title, Course.table_row_3: course.teacher_id, Course.table_row_4: json.dumps(course.schedule), Course.table_row_5: course.info, Course.table_row_6: course.finished}
         Course.connection.insert(Course.table, insert_query)
-        print(Course.connection.cursor.lastrowid)
         return
 
     # HERE!
@@ -77,17 +76,17 @@ class Course(Db_getter):
         return f"Course Id:{self.id}, Title:{self.title}, Teacher:{self.teacher_id}, Schedule: {self.schedule}, Information: {self.info}, Status: {finished_str}"
 
 if __name__ == "__main__":
-    #c1 = Course("Calculus", 1, {'Friday': "10:00", 'Monday': "11:00"}, "Something Something Something")
+    # c1 = Course("Calculus", 1, {'Friday': "10:00", 'Monday': "11:00"}, "Something Something Something")
     # c2 = Course("Laboratório de Programação", 0)
-    #Course.save_course(c1)
     # Course.save_course(c1)
+    # Course.save_course(c2)
     # Course.delete_course(Course("ajsidjai", 1))
     # Course.delete_by_id(2)
     # c1 = Course.get_course(3)
     # c1.title = "DMing with grace"
     # c1.teacher_id = 0
     # Course.update_course(c1)
-    # for each in Course.get_all_instances():
-    #     print(each)
-    print(Course.is_there_course(1))
-    print(Course.is_there_course(9))
+    for each in Course.get_all_instances():
+        print(each)
+    # print(Course.is_there_course(1))
+    # print(Course.is_there_course(9))

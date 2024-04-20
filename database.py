@@ -31,14 +31,13 @@ class Database:
                         course_id INTEGER);''')
 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS classes (
-                        course_id INTEGER,
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        course_id INTEGER,
                         type VARCHAR,
-                        name VARCHAR,
-                        date TIMESTAMP,
+                        date DATETIME,
                         info TEXT,
                         observation TEXT,
-                        wasTaken BOOL);''')
+                        was_held INTEGER);''')
 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS tests (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
