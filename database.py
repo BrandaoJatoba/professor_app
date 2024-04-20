@@ -14,11 +14,11 @@ class Database:
 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS courses (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        name VARCHAR,
+                        title VARCHAR,
                         teacher_id INTEGER,
-                        created_at TIMESTAMP, 
-                        times TEXT,
-                        info TEXT);''')
+                        schedule TEXT,
+                        info TEXT,
+                        finished INTEGER);''')
         
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS students (
                         id INTEGER PRIMARY KEY,
@@ -124,4 +124,3 @@ if __name__ == "__main__":
     # db.delete("teacher", "id = 1")
     # print(db.read('*', "teacher"))
     
-    # print(db.read('*', "teacher").fetchall())
