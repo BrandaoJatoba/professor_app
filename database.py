@@ -34,7 +34,7 @@ class Database:
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         course_id INTEGER,
                         type VARCHAR,
-                        date DATETIME,
+                        date DATE,
                         info TEXT,
                         observation TEXT,
                         was_held INTEGER);''')
@@ -113,10 +113,10 @@ class Database:
         
 if __name__ == "__main__":
     db = Database()
-    db.firstRun()
-    db.insert("teachers", {'id': 0, 'name': 'jozephf', 'info': 'whatever'})
+    # db.firstRun()
+    # db.insert("teachers", {'id': 0, 'name': 'jozephf', 'info': 'whatever'})
     # print(db.read('*', "teacher").fetchall())
-    db.insert("teachers", {'id': 1, 'name': 'joao', 'info': 'casdaseda'})
+    # db.insert("teachers", {'id': 1, 'name': 'joao', 'info': 'casdaseda'})
     print(db.read('*', "teachers").fetchall())
     # db.delete("teacher", "id = 0")
     # print(db.read('*', "teacher"))
