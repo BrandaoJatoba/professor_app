@@ -45,7 +45,7 @@ class Student(DbGetter):
         return
 
 if __name__ == "__main__":
-    s1 = Student(12314, "João", "Inteligente e legal")
+    s1 = Student(12314, "João", "")
     Student.save_student(s1)
     sS1 = Student.is_there_student(12314)
     print(sS1)

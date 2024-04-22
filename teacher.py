@@ -52,6 +52,6 @@ if __name__ == "__main__":
     # sT1 = Teacher.is_there_teacher(2)
     # print(sT1)
     # Teacher.delete_teacher(t1)
-    # sT1 = Teacher.is_there_teacher(2)
-    # print(sT1)
+    sT1 = Teacher.is_there_instance(2)
+    print(sT1)
     pass
