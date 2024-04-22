@@ -18,6 +18,7 @@ class Database:
                         teacher_id INTEGER,
                         schedule TEXT,
                         info TEXT,
+                        total_credit_hours FLOAT,
                         finished INTEGER);''')
         
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS students (
@@ -37,18 +38,20 @@ class Database:
                         date DATE,
                         info TEXT,
                         observation TEXT,
+                        credit_hours FLOAT,
                         was_held INTEGER);''')
 
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS tests (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        course_id INTEGER,
-                        info VARCHAR,
-                        date TIMESTAMP);''')
- 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS grades (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        course_id INTEGER,
+                        type INT,
+                        info VARCHAR,
+                        date DATE);''')
+ 
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS grades_students (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
                         student_id INTEGER,
-                        test_id INTEGER,
+                        grade_id INTEGER,
                         grade FLOAT,
                         extra_point FLOAT,
                         observation TEXT);''')
@@ -113,11 +116,11 @@ class Database:
         
 if __name__ == "__main__":
     db = Database()
-    # db.firstRun()
-    # db.insert("teachers", {'id': 0, 'name': 'jozephf', 'info': 'whatever'})
-    # print(db.read('*', "teacher").fetchall())
-    # db.insert("teachers", {'id': 1, 'name': 'joao', 'info': 'casdaseda'})
+    db.firstRun()
+    db.insert("teachers", {'id': 0, 'name': 'jozephf', 'info': 'whatever'})
+    db.insert("teachers", {'id': 1, 'name': 'joao', 'info': 'casdaseda'})
     print(db.read('*', "teachers").fetchall())
+    # print(db.read('*', "teacher").fetchall())
     # db.delete("teacher", "id = 0")
     # print(db.read('*', "teacher"))
     # db.delete("teacher", "id = 1")

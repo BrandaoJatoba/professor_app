@@ -1,6 +1,6 @@
-from db_getter import Db_getter
+from dbgetter import DbGetter
 
-class Teacher(Db_getter):
+class Teacher(DbGetter):
 
     table = "teachers"
     table_row_1 = "id"
