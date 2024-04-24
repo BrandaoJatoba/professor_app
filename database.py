@@ -34,9 +34,9 @@ class Database:
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS classes (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         course_id INTEGER,
-                        type VARCHAR,
+                        class_type INTERGER,
                         date DATE,
-                        info TEXT,
+                        subject TEXT,
                         observation TEXT,
                         credit_hours FLOAT,
                         was_held INTEGER);''')
@@ -44,11 +44,11 @@ class Database:
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS grades (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         course_id INTEGER,
-                        type INT,
-                        info VARCHAR,
+                        grade_type INT,
+                        information VARCHAR,
                         date DATE);''')
  
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS grades_students (
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS students_grades (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         student_id INTEGER,
                         grade_id INTEGER,
@@ -88,7 +88,7 @@ class Database:
 
     def update(self, columns_and_values: str, table: str, condition: str = "" ):
         try:
-            self.cursor.execute(f"UPDATE {table} set {columns_and_values} {condition}")
+            self.cursor.execute(f"UPDATE {table} SET {columns_and_values} {condition};")
             self.connection.commit()
         except sqlite3.IntegrityError as e:
             log().critical('Update Error')
