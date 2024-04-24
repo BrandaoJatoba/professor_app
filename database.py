@@ -18,6 +18,7 @@ class Database:
                         teacher_id INTEGER,
                         schedule TEXT,
                         info TEXT,
+                        total_credit_hours FLOAT,
                         finished INTEGER);''')
         
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS students (
@@ -31,25 +32,26 @@ class Database:
                         course_id INTEGER);''')
 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS classes (
-                        course_id INTEGER,
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        type VARCHAR,
-                        name VARCHAR,
-                        date TIMESTAMP,
-                        info TEXT,
+                        course_id INTEGER,
+                        class_type INTERGER,
+                        date DATE,
+                        subject TEXT,
                         observation TEXT,
-                        wasTaken BOOL);''')
+                        credit_hours FLOAT,
+                        was_held INTEGER);''')
 
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS tests (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        course_id INTEGER,
-                        info VARCHAR,
-                        date TIMESTAMP);''')
- 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS grades (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        course_id INTEGER,
+                        grade_type INT,
+                        information VARCHAR,
+                        date DATE);''')
+ 
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS students_grades (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
                         student_id INTEGER,
-                        test_id INTEGER,
+                        grade_id INTEGER,
                         grade FLOAT,
                         extra_point FLOAT,
                         observation TEXT);''')
@@ -86,7 +88,7 @@ class Database:
 
     def update(self, columns_and_values: str, table: str, condition: str = "" ):
         try:
-            self.cursor.execute(f"UPDATE {table} set {columns_and_values} {condition}")
+            self.cursor.execute(f"UPDATE {table} SET {columns_and_values} {condition};")
             self.connection.commit()
         except sqlite3.IntegrityError as e:
             log().critical('Update Error')
@@ -116,9 +118,9 @@ if __name__ == "__main__":
     db = Database()
     db.firstRun()
     db.insert("teachers", {'id': 0, 'name': 'jozephf', 'info': 'whatever'})
-    # print(db.read('*', "teacher").fetchall())
     db.insert("teachers", {'id': 1, 'name': 'joao', 'info': 'casdaseda'})
     print(db.read('*', "teachers").fetchall())
+    # print(db.read('*', "teacher").fetchall())
     # db.delete("teacher", "id = 0")
     # print(db.read('*', "teacher"))
     # db.delete("teacher", "id = 1")
