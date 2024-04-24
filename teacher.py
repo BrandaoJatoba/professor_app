@@ -3,55 +3,37 @@ from dbgetter import DbGetter
 class Teacher(DbGetter):
 
     table = "teachers"
-    table_row_1 = "id"
-    table_row_2 = "name"
-    table_row_3 = "info"
+    columns: list[str]  =   [
+                            "id",
+                            "name",
+                            "info"
+                            ]
+    instantiation_attr_order: list[int] = [0, 1, 2]
+    instantiation_attr_types = [str, str, int]
 
-    def __init__(self, id, name, info):
+    def __init__(self, id: int, name: str, info: str):
         self.id = id
         self.name = name
         self.info = info
-    
-    @classmethod
-    def is_there_teacher(cls, id:int) -> bool:
-        if(Teacher.connection.read("*", Teacher.table, f"WHERE id = {id}").fetchone()):
-            return True
-        return False
 
-    @classmethod
-    def get_teacher(cls, id: int) -> "Teacher":
-        if Teacher.is_there_teacher(id):
-            info = Teacher.connection.read("*", Teacher.table, f"WHERE id = {id}").fetchone()
-            return Teacher(info[0], info[1], info[2])
-        return
-    
-    @classmethod
-    def save_teacher(cls, teacher: "Teacher") -> None:
-        insert_query = vars(teacher)
-        Teacher.connection.insert(Teacher.table, insert_query)
-        return
-
-    @classmethod
-    def update_teacher(cls, teacher: "Teacher") -> None:
-        update_query = f"({Teacher.table_row_2}, {Teacher.table_row_3}) = ('{teacher.name}', '{teacher.info}')"
-        Teacher.connection.update(update_query, Teacher.table, f" WHERE {Teacher.table_row_1} = {teacher.id}")
-        return
-
-    @classmethod
-    def delete_teacher(cls, teacher: "Teacher") -> None:
-        delete_query = f"{Teacher.table_row_1} = {teacher.id}"
-        Teacher.connection.delete(Teacher.table, delete_query)
-        return
-
-
-
+    def __str__(self):
+        return f"Teacher Id:{self.id}, Name: {self.name}, Information: {self.info}"
     
 if __name__ == "__main__":
-    # t1 = Teacher(2, "Fábio", "Cara legal")
-    # Teacher.save_teacher(t1)
-    # sT1 = Teacher.is_there_teacher(2)
-    # print(sT1)
-    # Teacher.delete_teacher(t1)
-    sT1 = Teacher.is_there_instance(2)
-    print(sT1)
-    pass
+
+    # teacher1 = Teacher("Fábio", "Arquitetura")
+    # Teacher.save_instance(teacher1)
+
+    # Teacher.delete_by_id(2)
+
+    # updateTeacher = Teacher.get_instance(0)
+    # updateTeacher.name = "Jozefh"
+    # updateTeacher.info = "Letras"
+    # Teacher.update_instance(updateTeacher)
+
+    # print(Teacher.get_instance(0))
+
+    for each in Teacher.get_all():
+        print(each)
+
+    # print(Teacher.is_there_instance(2))
