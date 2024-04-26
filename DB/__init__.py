@@ -1,0 +1,1 @@
+__all__ = [ "dbgetter", "database","class", "classtype", "course", "coursesstudents",  "grades", "gradetype", "student", "studentsgrades", "teacher"]

@@ -1,5 +1,5 @@
 from dbgetter import DbGetter
-from classType import ClassType
+from classtype import ClassType
 from datetime import date, datetime
 
 class Class(DbGetter):
