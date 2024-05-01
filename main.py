@@ -5,15 +5,15 @@
 # wizard will get teacher name and basic info an then creates the tables
 # show main frame
 
-from db import database
+import database
 from os import path
 
-if path.exists("db/database.db") == False:
+if path.exists("database.db") == False:
     print("There is no database. Creating one...")
     # db = Database()
     # db.firstRun()
 
-if path.exists("db/database.db"):
+if path.exists("database.db"):
     print("There is a sql database file. Accessing Database")
     # db = database.Database()
     # print(db.read('*', "teachers").fetchall())
