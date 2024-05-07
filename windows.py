@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 from frames import HomePage
+from teacher import Teacher
+from course import Course
+from toplevelcourse import CourseWindow, NewCourseWindow
 
 class MainWindow(tk.Tk):
 
@@ -21,8 +24,8 @@ class MainWindow(tk.Tk):
         self.config(menu=menubar)
 
         courseMenu = tk.Menu(menubar, tearoff=0)
-        courseMenu.add_command(label="Nova Turma", command=self.openCourseWindow)
-        courseMenu.add_command(label="Lista de Turmas")
+        courseMenu.add_command(label="Nova Turma", command=self.newCourseWindow)
+        courseMenu.add_command(label="Lista de Turmas", command=self.openCourseWindow)
         menubar.add_cascade(label="Turmas", menu=courseMenu)
         self.config(menu=menubar)        
 
@@ -57,40 +60,9 @@ class MainWindow(tk.Tk):
     def openCourseWindow(self):
         courseWindow = CourseWindow(self)
 
-
-class CourseWindow(tk.Toplevel):
-    def __init__(self, parent):
-        super().__init__(parent)
-
-        self.title("Janela - Turmas")
-        self.geometry("800x600")
-
-        courseFrame = CourseFrame(self)
-        courseFrame.grid(column=0, row=0)
-    
-        ttk.Button(self,text='Close', command=self.destroy).grid_anchor()
-
-class CourseFrame(tk.Frame):
-    def __init__(self, container):
-        super().__init__(container)
-        #setup grid
-        self.columnconfigure(0, weight=1)
-        self.columnconfigure(0, weight=3)
-        #call widgets
-        self.__createWidgets()
-
-    def __createWidgets(self):
-        # insert labels and entries here
-        ttk.Label(self, text='Find what:').grid(column=0, row=0, sticky=tk.W)
-        keyword = ttk.Entry(self, width=30)
-        keyword.focus()
-        keyword.grid(column=1, row=0, sticky=tk.W)
-
-        # Replace with:
-        ttk.Label(self, text='Replace with:').grid(
-            column=0, row=1, sticky=tk.W)
-        replacement = ttk.Entry(self, width=30)
-        replacement.grid(column=1, row=1, sticky=tk.W)
+    def newCourseWindow(self):
+        teacherSubmit = NewCourseWindow(self)
+        teacherSubmit.lift()
 
 if __name__ == "__main__":
     window = MainWindow()
