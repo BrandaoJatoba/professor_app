@@ -28,7 +28,7 @@ class Grade(DbGetter):
         return f"Grade Id:{self.id}, Course Id:{self.course_id}, Type:{GradeType(self.grade_type).value}, Information: {self.information}, Date: {d}"
 
 if __name__ == "__main__":
-    # g1 = Grade(1, GradeType.ESSAY, "2ª Avaliação Escrita", date.fromisoformat("2024-07-11"))
+    # g1 = Grade(1, GradeType.EXAM, "1ª Avaliação Escrita", date.fromisoformat("2024-05-15"))
     # g1.save_instance(g1)
     # g1 = Grade.get_instance(5)
     # g1.date = date.fromisoformat("2024-07-10")

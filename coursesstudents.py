@@ -1,5 +1,4 @@
 from dbgetter import DbGetter
-from database import Database
 
 class CoursesStudents(DbGetter):
     

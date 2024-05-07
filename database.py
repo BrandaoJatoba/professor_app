@@ -58,7 +58,7 @@ class Database:
 
         self.connection.commit()
     
-    def insert(self, table: str, data: dict[str]):
+    def insert(self, table: str, data: dict[str]) -> None:
         he = []
         va = []
         if data != {}:
@@ -86,21 +86,21 @@ class Database:
             except sqlite3.IntegrityError as e:
                 log().critical('Insert Error')
 
-    def update(self, columns_and_values: str, table: str, condition: str = "" ):
+    def update(self, columns_and_values: str, table: str, condition: str = "" ) -> None:
         try:
             self.cursor.execute(f"UPDATE {table} SET {columns_and_values} {condition};")
             self.connection.commit()
         except sqlite3.IntegrityError as e:
             log().critical('Update Error')
 
-    def read(self, arg: str, table: str, condition: str = "")-> list[tuple[str]]:
+    def read(self, arg: str, table: str, condition: str = "") -> list[tuple[str]]:
         try:
             result = self.cursor.execute(f"SELECT {arg} FROM {table} {condition}")
         except sqlite3.IntegrityError as e:
             log().critical('Read Error')
         return result
     
-    def delete(self, table: str, condition: str):
+    def delete(self, table: str, condition: str) -> None:
         if table and condition != "":
             query = f"DELETE FROM {table} WHERE {condition}"
             
@@ -110,15 +110,15 @@ class Database:
             except sqlite3.IntegrityError as e:
                 log().critical('Delete Error')
 
-    def closeConnection(self):
+    def closeConnection(self) -> None:
         self.connection.close()
 
         
 if __name__ == "__main__":
     db = Database()
-    db.firstRun()
-    db.insert("teachers", {'id': 0, 'name': 'jozephf', 'info': 'whatever'})
-    db.insert("teachers", {'id': 1, 'name': 'joao', 'info': 'casdaseda'})
+    # db.firstRun()
+    # db.insert("teachers", {'id': 0, 'name': 'jozephf', 'info': 'whatever'})
+    # db.insert("teachers", {'id': 1, 'name': 'joao', 'info': 'casdaseda'})
     print(db.read('*', "teachers").fetchall())
     # print(db.read('*', "teacher").fetchall())
     # db.delete("teacher", "id = 0")
